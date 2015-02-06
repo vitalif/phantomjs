@@ -401,11 +401,15 @@ void WebServerResponse::write(const QVariant &body)
     if (m_encoding.isEmpty()) {
         data = body.toString().toUtf8();
     } else if (m_encoding.toLower() == "binary") {
-        data = body.toByteArray();
+        QString str = body.toString();
+        data.reserve(str.length());
+        for (int i = 0; i < str.length(); ++i) {
+            data[i] = (char)str.at(i).unicode();
+        }
     } else {
         Encoding encoding;
         encoding.setEncoding(m_encoding);
-        data = encoding.encode(body.toString());
+        QByteArray data = encoding.encode(body.toString());
     }
 
     mg_write(m_conn, data.constData(), data.size());

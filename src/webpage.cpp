@@ -582,7 +582,6 @@ void WebPage::applySettings(const QVariantMap &def)
     opt->setAttribute(QWebSettings::JavascriptEnabled, def[PAGE_SETTINGS_JS_ENABLED].toBool());
     opt->setAttribute(QWebSettings::XSSAuditingEnabled, def[PAGE_SETTINGS_XSS_AUDITING].toBool());
     opt->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, def[PAGE_SETTINGS_LOCAL_ACCESS_REMOTE].toBool());
-    opt->setAttribute(QWebSettings::WebSecurityEnabled, def[PAGE_SETTINGS_WEB_SECURITY_ENABLED].toBool());
     opt->setAttribute(QWebSettings::JavascriptCanOpenWindows, def[PAGE_SETTINGS_JS_CAN_OPEN_WINDOWS].toBool());
     opt->setAttribute(QWebSettings::JavascriptCanCloseWindows, def[PAGE_SETTINGS_JS_CAN_CLOSE_WINDOWS].toBool());
 
@@ -690,9 +689,7 @@ QVariant WebPage::evaluateJavaScript(const QString &code)
 
     qDebug() << "WebPage - evaluateJavaScript" << function;
 
-    evalResult = m_currentFrame->evaluateJavaScript(
-                function,                                   //< function evaluated
-                QString("phantomjs://webpage.evaluate()")); //< reference source file
+    evalResult = m_currentFrame->evaluateJavaScript(function);
 
     qDebug() << "WebPage - evaluateJavaScript result" << evalResult;
 
@@ -859,7 +856,7 @@ void WebPage::openUrl(const QString &address, const QVariant &op, const QVariant
         networkOp = QNetworkAccessManager::DeleteOperation;
 
     if (networkOp == QNetworkAccessManager::UnknownOperation) {
-        m_mainFrame->evaluateJavaScript("console.error('Unknown network operation: " + operation + "');", QString());
+        m_mainFrame->evaluateJavaScript("console.error('Unknown network operation: " + operation + "');");
         return;
     }
 
@@ -1191,7 +1188,7 @@ bool WebPage::renderPdf(const QString &fileName)
 
     printer.setPageMargins(marginLeft, marginTop, marginRight, marginBottom, QPrinter::Point);
 
-    m_mainFrame->print(&printer, this);
+    m_mainFrame->print(&printer);
     return true;
 }
 
@@ -1249,7 +1246,7 @@ QString getHeaderFooter(const QVariantMap &map, const QString &key, QWebFrame *f
             }
         }
     }
-    frame->evaluateJavaScript("console.error('Bad header callback given, use phantom.callback);", QString());
+    frame->evaluateJavaScript("console.error('Bad header callback given, use phantom.callback);");
     return QString();
 }
 
@@ -1285,7 +1282,7 @@ bool WebPage::injectJs(const QString &jsFilePath) {
 }
 
 void WebPage::_appendScriptElement(const QString &scriptUrl) {
-    m_currentFrame->evaluateJavaScript(QString(JS_APPEND_SCRIPT_ELEMENT).arg(scriptUrl), scriptUrl);
+    m_currentFrame->evaluateJavaScript(QString(JS_APPEND_SCRIPT_ELEMENT).arg(scriptUrl));
 }
 
 QObject *WebPage::_getGenericCallback() {

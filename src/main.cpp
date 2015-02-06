@@ -42,8 +42,17 @@
 
 int main(int argc, char** argv)
 {
+    char **new_argv = (char**) malloc(sizeof(char*) * (3+argc));
+    new_argv[0] = argv[0];
+    new_argv[1] = (char*)"-platform";
+    new_argv[2] = (char*)"phantom";
+    for (int i = 1; i < argc; i++) {
+        new_argv[2+i] = argv[i];
+    }
+    new_argv[2+argc] = NULL;
     CrashHandler crash_guard;
-    QApplication app(argc, argv);
+    argc += 2;
+    QApplication app(argc, new_argv);
 
     app.setWindowIcon(QIcon(":/phantomjs-icon.png"));
     app.setApplicationName("PhantomJS");
