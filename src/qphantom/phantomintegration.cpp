@@ -47,7 +47,7 @@
 #if defined(Q_OS_MAC)
 # include <QtPlatformSupport/private/qcoretextfontdatabase_p.h>
 #else
-# include <QtPlatformSupport/private/qgenericunixfontdatabase_p.h>
+# include <QtPlatformSupport/private/qfontconfigdatabase_p.h>
 #endif
 
 #include <QtPlatformSupport/private/qgenericunixeventdispatcher_p.h>
@@ -103,7 +103,7 @@ QPlatformFontDatabase *PhantomIntegration::fontDatabase() const
 #if defined(Q_OS_MAC)
         db = new QCoreTextFontDatabase();
 #else
-        db = new QGenericUnixFontDatabase();
+        db = new QFontconfigDatabase();
 #endif
     }
     return db;
