@@ -2,18 +2,15 @@ TEMPLATE = lib
 TARGET = qphantom
 DESTDIR = ../../bin
 
-CONFIG += plugin
-CONFIG += qpa/genericunixfontdatabase
+CONFIG += plugin static
 
 PLUGIN_TYPE = platforms
 PLUGIN_CLASS_NAME = PhantomIntegrationPlugin
 
-QT += core-private gui-private platformsupport-private
+QT += platformsupport-private
 
-SOURCES =   main.cpp \
+SOURCES +=  main.cpp \
             phantomintegration.cpp \
             phantombackingstore.cpp
-HEADERS =   phantomintegration.h \
+HEADERS +=  phantomintegration.h \
             phantombackingstore.h
-
-OTHER_FILES += phantom.json

@@ -40,6 +40,9 @@
 #include <QSslSocket>
 #include <QIcon>
 
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(PhantomIntegrationPlugin)
+
 int main(int argc, char** argv)
 {
     char **new_argv = (char**) malloc(sizeof(char*) * (3+argc));

@@ -8,14 +8,13 @@ TARGET = phantomjs
 QT += network webkitwidgets printsupport
 CONFIG += console
 
+QT += platformsupport-private
+LIBS += ../bin/libqphantom.a
+
 DESTDIR = ../bin
 
 RESOURCES = phantomjs.qrc \
     ghostdriver/ghostdriver.qrc
-
-!winrt:!win32: {
-    QTPLUGIN += qphantom
-}
 
 HEADERS += \
     phantom.h \
